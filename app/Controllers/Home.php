@@ -13,7 +13,7 @@ class Home extends BaseController
     public function make_Random_payload($Loan_Amount,$pay_frequency,$Annual_Gross_Income,$Total_expenses,$total_repayment_amount__c): array
     {
         $csvFilePath = WRITEPATH . "../csv/Loan_".$Loan_Amount.".csv";
-       
+        
     
         if ($pay_frequency == 3) {
             $max_repayment_amount = $this -> calculateRepayentAmout($Loan_Amount, 2);
@@ -56,7 +56,7 @@ class Home extends BaseController
                 $fpayFrequency =$row['DP_Primary_income_frequency__c'];
                 $ftotalRepayment =$row['Total_Repayment_Amount__c'];
                 
-                if($floanAmount == $Loan_Amount && $fpayFrequency == $pay_frequency && $ftotalRepayment >= $total_repayment_amount__c && $ftotalRepayment <=  $max_repayment_amount){
+                if($floanAmount == $Loan_Amount && $fpayFrequency == $pay_frequency && $ftotalRepayment >= $total_repayment_amount__c && $ftotalRepayment <=  $max_repayment_amount){                 
                   
                     // the filtered data will push inside $data
                     $data[] = $row;
@@ -184,15 +184,15 @@ class Home extends BaseController
             $extract_Random_record["Summary_Expenses__c"]       = (int)$Total_expenses;
             $extract_Random_record["Loan_Amount__c"]            = (int)$Loan_Amount;
             $extract_Random_record["Total_Repayment_Amount__c"] = $total_repayment_amount__c;
+            $extract_Random_record["Amount_Requested__c"] = (int)$Loan_Amount;
+            $extract_Random_record["Payment_Frequency__c"] = $this -> pay_frequency_convert($pay_frequency);
             // echo "<pre>";
             // print_r($extract_Random_record);
             // die();
        
             // echo strpos('this_date', 'date');
             foreach ($extract_Random_record as $key => $val) {
-                
-                if (strpos($key, 'date') && $val ==0) {
-                    
+                if ((strpos($key, 'date') && $val ==0)|| strpos($key, 'date')) {
                     $extract_Random_record[$key] = '';
 
                 } elseif (is_float($val) ) {
@@ -224,12 +224,15 @@ class Home extends BaseController
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPayload);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
             ]);
 
             // Execute cURL session and get the response
-            // die;
+            print_r($jsonPayload);
             $response_from_salesforce_server = json_decode( curl_exec($ch));
             echo "<pre>";
             print_r($response_from_salesforce_server);

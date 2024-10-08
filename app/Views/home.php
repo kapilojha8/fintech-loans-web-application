@@ -20,7 +20,7 @@
            <img class="img-fluid loan-slide" src='images/slider/slider-2.jpg' alt="First slide">
           <div class="img-overlay">
            <div class="carousel-caption d-none d-md-block">
-               <h1 class="display-2 text-white fw-bold">Hassle free Small Business loan up to $2000.00 by ritik</h1>
+               <h1 class="display-2 text-white fw-bold">Hassle free Small Business loan up to $2000.00</h1>
                <p>Education Loan From Avanse At
                    An Attractive Rate Of Interest. Apply Now!</p>
                    <div class="action">
